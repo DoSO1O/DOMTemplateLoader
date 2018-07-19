@@ -1,7 +1,7 @@
 {
 	"eslint.options": {
 		"rules": {
-			"no-undef": "off"
+			"no-undef": "warn"
 		}
 	}
 }

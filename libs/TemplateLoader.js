@@ -5,7 +5,13 @@
 class TemplateLoader {
 	static get SELECTORS () {
 		return {
-			Component: "DTL\\:Component"
+			Tags: {
+				Component: "DTL\\:Component"
+			},
+
+			Attrs: {
+				ComponentName: "DTL\\:Name"
+			}
 		}
 	}
 	
@@ -20,7 +26,7 @@ class TemplateLoader {
 	static loadComponents (rootDir, template) {
 		const tasks = [];
 
-		const components = template.querySelectorAll(TemplateLoader.SELECTORS.Component);
+		const components = template.querySelectorAll(TemplateLoader.SELECTORS.Tags.Component);
 		for (const component of components) {
 			let componentUrl = component.getAttribute("Src");
 
@@ -34,7 +40,7 @@ class TemplateLoader {
 		}
 
 		return Promise.all(tasks).then(() => {
-			if (!template.querySelectorAll(TemplateLoader.SELECTORS.Component).length) return;
+			if (!template.querySelectorAll(TemplateLoader.SELECTORS.Tags.Component).length) return;
 
 			TemplateLoader.loadComponents(rootDir, template);
 		});
@@ -72,7 +78,7 @@ class TemplateLoader {
 	on (eventName, callback) {
 		switch (eventName) {
 			default:
-				throw new TypeError("The provided event-type is not acceptable");
+				throw new TypeError("A provided event-type is not acceptable");
 
 			case "load":
 				return new Promise(resolve => {
@@ -87,6 +93,18 @@ class TemplateLoader {
 				});
 		}
 	}
+
+	/**
+	 * テンプレート内のコンポーネントを読み込みます
+	 * 
+	 * @param {String} name コンポーネント名
+	 * @param {String[]} variables コンポーネント内変数
+	 * 
+	 * @return {HTMLElement}
+	 */
+	createComponent (name, ...variables) {
+		return new Component(this.template, name, ...variables);
+	}
 }
 
 /**
@@ -99,10 +117,28 @@ class Component {
 	/**
 	 * Componentを生成します
 	 * 
-	 * @param {HTMLHtmlElement} templateHtml テンプレートDOM要素
+	 * @param {HTMLHtmlElement} template テンプレートDOM要素
 	 * @param {String} name コンポーネント名
+	 * @param {String[]} [variables] コンポーネント内変数
+	 * 
+	 * @return {HTMLElement}
 	 */
-	constructor (templateHtml, name) {
-		
+	constructor (template, name, ...variables) {
+		const foundComponent = template.querySelector(`*[${TemplateLoader.SELECTORS.Attrs.ComponentName}="${name}"]`);
+		if (!foundComponent) throw new TypeError("Any components aren't found by the provided condition");
+
+		const component = document.importNode(foundComponent, true);
+
+		const componentWrapper = document.createElement("div");
+		componentWrapper.appendChild(component);
+
+		component.outerHTML = (() => {
+			let html = component.outerHTML;
+			variables.forEach((variable, index) => html = html.replace(new RegExp(`\\$\\{${index}\\}`, "g"), variable));
+
+			return html;
+		})();
+
+		return component;
 	}
 }
