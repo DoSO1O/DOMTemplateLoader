@@ -1,5 +1,5 @@
 /**
- * テンプレートを用いてコンポーネントを読み込むクラス
+ * HTMLテンプレートを読み込むクラス
  * @author Genbu Hase
  */
 class TemplateLoader {
@@ -55,6 +55,8 @@ class TemplateLoader {
 	constructor (templateUrl) {
 		if (templateUrl == undefined) throw new TypeError("templateUrl is required");
 
+		this.loaded = false;
+
 		let rootDir = "";
 		fetch(templateUrl).then(resp => {
 			rootDir = new URL(resp.url).pathname.split(/\//).slice(1, -1).join("/");
@@ -63,7 +65,10 @@ class TemplateLoader {
 			const template = document.createElement("html");
 			template.innerHTML = html;
 
-			TemplateLoader.loadComponents(rootDir, template).then(() => this.template = template);
+			TemplateLoader.loadComponents(rootDir, template).then(() => {
+				this.template = template;
+				this.loaded = true;
+			});
 		}).catch(error => { throw error });
 	}
 
@@ -83,7 +88,7 @@ class TemplateLoader {
 			case "load":
 				return new Promise(resolve => {
 					const detector = setInterval(() => {
-						if (this.template) {
+						if (this.loaded) {
 							clearInterval(detector);
 
 							if (callback) callback(this);
@@ -113,6 +118,10 @@ class TemplateLoader {
 
 
 
+/**
+ * テンプレートを用いてコンポーネントを読み込むクラス
+ * @author Genbu Hase
+ */
 class Component {
 	/**
 	 * Componentを生成します
@@ -139,6 +148,6 @@ class Component {
 			return html;
 		})();
 
-		return component;
+		return componentWrapper.firstElementChild;
 	}
 }
