@@ -108,7 +108,7 @@ class TemplateLoader {
 	 * @return {HTMLElement}
 	 */
 	createComponent (name, ...variables) {
-		return new Component(this.template, name, ...variables);
+		return new TemplateLoader.Component(this.template, name, ...variables);
 	}
 }
 
@@ -122,7 +122,7 @@ class TemplateLoader {
  * テンプレートを用いてコンポーネントを読み込むクラス
  * @author Genbu Hase
  */
-class Component {
+TemplateLoader.Component = class Component {
 	/**
 	 * Componentを生成します
 	 * 
