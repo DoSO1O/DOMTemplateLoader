@@ -1,0 +1,15 @@
+Main {
+	Padding: 1em;
+}
+
+#viewer > * {
+	Height: 300px;
+}
+
+#viewer-codeViewer {
+	Overflow-Y: Auto;
+}
+
+#viewer-codeViewer-codes {
+	Font-Size: X-Small;
+}

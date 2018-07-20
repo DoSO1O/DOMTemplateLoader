@@ -5,11 +5,50 @@
 		<Meta Charset = "UTF-8" />
 		<Title>Example | DOM Template Loader</Title>
 
+		<Link Rel = "StyleSheet" Href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css" />
+		<Link Rel = "StyleSheet" Href = "https://fonts.googleapis.com/icon?family=Material+Icons" />
+		<Link Rel = "StyleSheet" Href = "assets/template/AuthorCard.css" />
+		<Link Rel = "StyleSheet" Href = "main.css" />
+
+		<Script Src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></Script>
 		<Script Src = "libs/TemplateLoader.js"></Script>
 		<Script Src = "main.js" Defer></Script>
 	</Head>
 
 	<Body>
-		
+		<Header Class = "navbar-fixed">
+			<Nav>
+				<Div Class = "nav-wrapper">
+					<Span Class = "brand-logo center">Example | DOM Template Loader</Span>
+				</Div>
+			</Nav>
+		</Header>
+
+		<Main>
+			<Section ID = "builder">
+				<Div Class = "input-field">
+					<Input ID = "builder-name" Type = "Text" />
+					<Label For = "builder-name">Name | 名前</Label>
+				</Div>
+
+				<Div Class = "input-field">
+					<Textarea ID = "builder-bio" Class = "materialize-textarea"></Textarea>
+					<Label For = "builder-bio">Bio | 自己紹介</Label>
+				</Div>
+
+				<Button ID = "builder-build" Class = "btn waves-effect waves-light">Build!</Button>
+			</Section>
+
+			<Section Class = "container">
+				<Div ID = "viewer" Class = "row">
+					<Div Class = "AuthorCard card col s5">
+					</Div>
+
+					<Div ID = "viewer-codeViewer" Class = "input-field col s5 offset-s2">
+						<Textarea ID = "viewer-codeViewer-codes" Class = "materialize-textarea" ReadOnly></Textarea>
+					</Div>
+				</Div>
+			</Section>
+		</Main>
 	</Body>
 </HTML>
