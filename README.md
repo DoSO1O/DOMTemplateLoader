@@ -15,7 +15,7 @@ You could handle DOM element as a component, loaded from any templates, with thi
 * Various features of templating
 
 
-## How to Usage
+## How to Use
 For using this library, load `libs/TemplateLoader.js` in any pages you wanna use.
 
 Follow the pages if you wanna know in details.
