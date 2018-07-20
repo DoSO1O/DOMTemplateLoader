@@ -59,7 +59,7 @@ class TemplateLoader {
 
 		let rootDir = "";
 		fetch(templateUrl).then(resp => {
-			rootDir = new URL(resp.url).pathname.split(/\//).slice(1, -1).join("/");
+			rootDir = new URL(resp.url).href.replace(document.baseURI, "").split(/\//).join("/");
 			return resp.text();
 		}).then(html => {
 			const template = document.createElement("html");
